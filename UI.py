@@ -4,12 +4,13 @@ import matplotlib.pyplot as plt
 import gi 
 
 from Graph import divided_dataset as divided_dataset
+gi.require_version("Gtk", "3.0")
+
 from gi.repository import Gtk 
 
 matplotlib.use('GTK3Agg')  # or 'GTK3Cairo'
-gi.require_version("Gtk", "3.0")
 
-graphs = []
+graphs = {}
 
 class DatasetDivider(Gtk.Window):
 
@@ -56,11 +57,9 @@ class DatasetDivider(Gtk.Window):
             a = a[::-1]
             return a
 
-
     # Takes a string (a filename), and returns the string with the extension removed
     def removeExtension(self, s):
         return s[0:s.index(".")]
-
 
     # This function is run when the user click on "Select first data set"
     # It retrieves the name of the file that the user clicks on
@@ -80,7 +79,7 @@ class DatasetDivider(Gtk.Window):
                 newfile = self.removeSlash(filename)
                 print("File selected: " + newfile)
                 if newfile != None:
-                    graphs.append(newfile)
+                    graphs[0] = newfile
                     self.labelOne.set_text(self.removeExtension(graphs[0]))
                     
             print("click1")
@@ -89,7 +88,6 @@ class DatasetDivider(Gtk.Window):
             print("Cancel clicked")
 
         dialog.destroy()
-
 
     # This function is run when the user click on "Select second data set"
     # It retrieves the name of the file that the user clicks on
@@ -110,7 +108,7 @@ class DatasetDivider(Gtk.Window):
                 print("File selected: " + newfile)
 
                 if newfile != None:
-                    graphs.append(newfile)
+                    graphs[1] = newfile
                     self.labelTwo.set_text(self.removeExtension(graphs[1]))
 
             print("click2")
@@ -120,7 +118,6 @@ class DatasetDivider(Gtk.Window):
 
         dialog.destroy()
 
-
     # This function is run when the user click on the "Display graph"
     # It displays the graph of the data set obtained from dividing the first
     # data set by the second data set
@@ -128,9 +125,9 @@ class DatasetDivider(Gtk.Window):
 
         startTime = time.time_ns()
         
-        if len(graphs) == 2:
-            last = graphs.pop()
-            first = graphs.pop()
+        if len(graphs.keys()) == 2:
+            last = graphs[1]
+            first = graphs[0]
         else:
             print("You have not selected two graphs!")
             return
@@ -138,7 +135,6 @@ class DatasetDivider(Gtk.Window):
 
         # Obtaining the data
         # ------------------------------------------------------------------
-
         startTimeData = time.time_ns()
         
         data = divided_dataset(first,last)
@@ -149,7 +145,6 @@ class DatasetDivider(Gtk.Window):
         print("Total time taken in seconds to obtain data = " + str(timeTakenData))
         # ------------------------------------------------------------------
 
-        # Add labels to x and y axis
 
         # Setting up the graph
         # ------------------------------------------------------------------
@@ -180,18 +175,13 @@ class DatasetDivider(Gtk.Window):
         print("plot")
         plt.show()
 
-        timeTaken = (time.time_ns() - startTime)/1000000000
-        print("Total time taken in seconds to run plot() = " + str(timeTaken))
-        print("plot")
-
-
     # This function is run when the user click on "Reset"
     # It removes the graph and resets the names of the files selected
     def reset(self, widget):
 
         global graphs
 
-        graphs = []
+        graphs = {}
 
         self.labelOne.set_text("")
         self.labelTwo.set_text("")
