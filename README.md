@@ -1,7 +1,7 @@
 # Dataset-Divider-Gtk
 
 
-Dataset Divider is a python app that uses Gtk and allows you to divide csv data files and display the resulting graphs. Only csv files downloaded from https://fred.stlouisfed.org/ are supported.
+Dataset Divider is a Python app that uses Gtk and allows you to divide csv data files and display the resulting graphs. Only csv files downloaded from https://fred.stlouisfed.org/ are supported.
 
 Requirements before you run this program:
 1) You must have matplotlib installed. You may run the following command to install it: "pip install matplotlib".
@@ -10,3 +10,7 @@ Requirements before you run this program:
 To run, execute this command: python3 UI.py
 
 Select the first and second datasets, then click on the "Display Graph" button. The graph of the first dataset divided by the second dataset will be displayed.
+
+Example:
+
+![Data](https://user-images.githubusercontent.com/114560165/199879651-a81aa867-682a-44b0-9be5-4e8e3867d159.png)
